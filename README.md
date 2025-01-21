@@ -43,7 +43,7 @@ The primary optimization target is based on the **multiplication of the Probabil
 
 You can modify the **primary objective** (`calculate_psr(rets.T) * omg`) to incorporate new performance metrics. However, it is critical to **retain the secondary objective**, which ensures robustness and diversification.
 
-### Modifying the Reward Function
+## Additional Tips and Details
 
 - **Data Preprocessing**:
   - In `app.py`, the log-returns are first **denoised**. You can comment-out that part of the code if you wish to use raw data.
