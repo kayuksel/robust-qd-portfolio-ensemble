@@ -24,7 +24,7 @@ The method combines cutting-edge techniques such as **Generative Meta-Learning**
 ### 🔹 **State-of-the-Art Techniques**
 - **Generative Meta-Learning**:
   - Invented for non-convex population-based optimization in high-dimensional spaces.
-  - Not implemented in this repo for simplicity, please refer to https://github.com/kayuksel/generative-opt
+  - Not implemented here for simplicity, please refer to https://github.com/kayuksel/generative-opt
 - **Monte Carlo Optimization**:
   - Uses DropBlock for enhanced robustness against noise.
 - **Parallelization**:
