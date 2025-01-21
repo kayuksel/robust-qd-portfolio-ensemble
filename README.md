@@ -33,4 +33,4 @@ The method combines cutting-edge techniques such as **Generative Meta-Learning**
 ## Published in GECCO 2023 🎉
 This approach has been peer-reviewed and published in the **Genetic and Evolutionary Computation Conference (GECCO) 2023**.
 
-📄 **Read the paper**: [https://lnkd.in/d2Zz-Gup](https://arxiv.org/abs/2307.07811)
+📄 **Read the paper**: [https://arxiv.org/abs/2307.07811](https://arxiv.org/abs/2307.07811)
