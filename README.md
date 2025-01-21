@@ -36,8 +36,8 @@ The optimization target is based on the **multiplication of the Probabilistic Sh
 
 ### Secondary Objective
 
-- **Maximum Correlation Penalty**: Ensures sub-portfolios are diversified by reducing inter-correlation.
-- **Eigen Entropy Regularization (optional)**: Encourages sparsity and diversity in portfolio weights for further robustness.
+- **Maximum Correlation Penalty**: Ensures sub-portfolios within the population are diversified by reducing inter-correlation.
+- **Eigen Entropy Regularization (optional)**: Encourages further out-of-sample robustness of the individual sub-portfolios.
 
 ### Modifying the Reward Function
 
