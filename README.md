@@ -28,6 +28,7 @@ git clone https://github.com/your-repo/robust-qd-portfolio.git
 cd robust-qd-portfolio
 pip install -r requirements.txt
 streamlit run app.py --server.maxUploadSize 1000
+```
 
 ## Published in GECCO 2023 🎉
 This approach has been peer-reviewed and published in the **Genetic and Evolutionary Computation Conference (GECCO) 2023**.
