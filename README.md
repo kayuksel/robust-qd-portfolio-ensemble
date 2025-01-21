@@ -45,14 +45,11 @@ You can modify the **primary objective** (`calculate_psr(rets.T) * omg`) to inco
 
 ## Additional Tips and Details
 
-- **Data Preprocessing**:
-  - In `app.py`, the log-returns are first **denoised**. You can comment-out that part of the code if you wish to use raw data.
+- **Data Preprocessing**: In `app.py`, the log-returns are first **denoised**. You can comment-out that part of the code if you wish to use raw data.
 
-- **Large Asset Universe**:
-  - This method is best with **thousands of assets**. You can reduce the number of iterations to obtain a less sparse portfolio.
+- **Large Asset Universe**: This method is best with **thousands of assets**. You can reduce the number of iterations to obtain a less sparse portfolio.
 
-- **Index Relative Reward Calculation**:
-  - The reward is calculated **relative to a selected index**. To disable this, add a fake index column with static log returns.
+- **Index Relative Reward Calculation**: The reward is calculated **relative to a selected index**. To disable this, add a fake index column with static log returns.
 
 - **Performance Over Iterations**:
   - This [video](https://youtu.be/o43D7ubjkqg) shows the mean-portfolio returns (blue) versus the index (red) and behavioral diversity (heatmap) over iterations.
