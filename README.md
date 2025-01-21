@@ -1,7 +1,7 @@
 # 🌟 Robust QD Portfolio Ensemble Optimization 🌟
 
 This repository provides a Streamlit app implementation for **Robust Quality-Diversity Portfolio**, a method co-optimizing thousands of sub-portfolios and assembles them to maximize out-of-sample robustness. 
-The method combines cutting-edge techniques such as **Generative Meta-Learning**, **Monte Carlo Optimization**, and sparse portfolio construction using the **SparseMax** layer, scaling to thousands of assets.
+The method combines cutting-edge techniques such as **Generative Meta-Learning**, **Monte Carlo Optimization** through **DropBlock**, and sparse portfolio construction using the **SparseMax** layer, scaling to thousands of assets.
 
 ## Key Highlights
 
