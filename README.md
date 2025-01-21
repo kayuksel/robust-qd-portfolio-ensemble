@@ -43,6 +43,21 @@ The primary optimization target is based on the **multiplication of the Probabil
 
 You can modify the **primary objective** (`calculate_psr(rets.T) * omg`) to incorporate new performance metrics. However, it is critical to **retain the secondary objective**, which ensures robustness and diversification.
 
+### Modifying the Reward Function
+
+- **Data Preprocessing**:
+  - In `app.py`, the log-returns are first **denoised**. You can comment-out that part of the code if you wish to use raw data.
+
+- **Large Asset Universe**:
+  - This method is best with **thousands of assets**. You can reduce the number of iterations to obtain a less sparse portfolio.
+
+- **Index Relative Reward Calculation**:
+  - The reward is calculated **relative to a selected index**. To disable this, add a fake index column with static log returns.
+
+- **Performance Over Iterations**:
+  - This [video](https://youtu.be/o43D7ubjkqg) shows the mean-portfolio returns (blue) versus the index (red) and behavioral diversity (heatmap) over iterations.
+  - The app does not include monitoring over iterations for speed, please watch the video to understand what is happening during the co-optimization.
+
 ## Published in GECCO 2023 🎉
 
 📄 **Read the paper**: [https://arxiv.org/abs/2307.07811](https://arxiv.org/abs/2307.07811)
