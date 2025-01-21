@@ -5,23 +5,12 @@ The method combines cutting-edge techniques such as **Generative Meta-Learning**
 
 ## Key Highlights
 
-### 🔹 **Maximizing Behavioral Diversity**
-- **Multi-Objective Quality-Diversity Optimization**:
+- **Quality-Diversity Optimization**:
   - Behavioral diversity is measured using return correlations across co-optimized sub-portfolios.
-  
-- **Ensemble μ-Portfolio Returns**:
-  - The **blue line** on the cumulative returns chart represents the Ensemble μ-Portfolio returns.
-  - The shaded region depicts the distribution of population returns.
-
-### 🔹 **Sparse Portfolio Optimization**
 - **Scalability**:
   - Efficiently scales to **thousands of assets**, surpassing traditional optimization methods.
 - **SparseMax Layer**:
   - Ensures sparse portfolio construction, allowing for reduced complexity and improved interpretability.
-- **Visualization**:
-  - A dynamic pie chart displays μ-Portfolio weights after optimization.
-
-### 🔹 **State-of-the-Art Techniques**
 - **Generative Meta-Learning**:
   - Invented for non-convex population-based optimization in high-dimensional spaces.
   - Not included here for simplicity, refer to https://github.com/kayuksel/generative-opt
