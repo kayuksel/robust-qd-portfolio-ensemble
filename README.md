@@ -31,6 +31,5 @@ streamlit run app.py --server.maxUploadSize 1000
 ```
 
 ## Published in GECCO 2023 🎉
-This approach has been peer-reviewed and published in the **Genetic and Evolutionary Computation Conference (GECCO) 2023**.
 
 📄 **Read the paper**: [https://arxiv.org/abs/2307.07811](https://arxiv.org/abs/2307.07811)
