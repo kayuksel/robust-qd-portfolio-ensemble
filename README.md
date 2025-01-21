@@ -27,7 +27,6 @@ This approach has been peer-reviewed and published in the **Genetic and Evolutio
 
 Follow the steps below to get the Streamlit app up and running:
 
-### 1. Clone the Repository
 ```bash
 git clone https://github.com/your-repo/robust-qd-portfolio.git
 cd robust-qd-portfolio
