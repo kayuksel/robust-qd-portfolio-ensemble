@@ -22,3 +22,14 @@ The method combines cutting-edge techniques such as **Generative Meta-Learning**
 ## Published in GECCO 2023 🎉
 This approach has been peer-reviewed and published in the **Genetic and Evolutionary Computation Conference (GECCO) 2023**. 
 📄 **Read the paper**: [https://arxiv.org/abs/2307.07811](https://arxiv.org/abs/2307.07811)
+
+## 🚀 Quick Start Guide
+
+Follow the steps below to get the Streamlit app up and running:
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/your-repo/robust-qd-portfolio.git
+cd robust-qd-portfolio
+pip install -r requirements.txt
+streamlit run app.py --server.maxUploadSize 1000
