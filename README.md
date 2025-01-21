@@ -30,11 +30,11 @@ pip install -r requirements.txt
 streamlit run app.py --server.maxUploadSize 1000
 ```
 
-## Reward Function Overview
+## Multi-Objective Optimization
 
 The primary optimization target is based on the **multiplication of the Probabilistic Sharpe Ratio (PSR)** and the **Omega Ratio (OMG)**, which balances portfolio performance and robustness against extreme returns.
 
-### Secondary Objective
+### Secondary Objectives
 
 - **Maximum Correlation Penalty**: Ensures sub-portfolios within the population are diversified by reducing inter-correlation.
 - **Eigen Entropy Regularization (optional)**: Encourages further out-of-sample robustness of the individual sub-portfolios.
