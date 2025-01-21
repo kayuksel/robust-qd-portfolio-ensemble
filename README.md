@@ -13,7 +13,7 @@ The method combines cutting-edge techniques such as **Generative Meta-Learning**
   - Ensures sparse portfolio construction, allowing for reduced complexity and improved interpretability.
 - **Generative Meta-Learning**:
   - Invented for non-convex population-based optimization in high-dimensional spaces.
-  - Not included here for simplicity, refer to https://github.com/kayuksel/generative-opt
+  - Excluded from here for simplicity, refer to https://github.com/kayuksel/generative-opt
 - **Monte Carlo Optimization**:
   - Uses DropBlock for enhanced robustness against noise.
 - **Parallelization**:
