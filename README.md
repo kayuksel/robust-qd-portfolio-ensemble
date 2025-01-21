@@ -56,7 +56,7 @@ You can modify the **primary objective** (`calculate_psr(rets.T) * omg`) to inco
 
 - **Performance Over Iterations**:
   - This [video](https://youtu.be/o43D7ubjkqg) shows the mean-portfolio returns (blue) versus the index (red) and behavioral diversity (heatmap) over iterations.
-  - The app does not include monitoring over iterations for speed, please watch the video to understand what is happening during the co-optimization.
+  - The app does not include monitoring over iterations for speed, please watch the video to understand what is happening behind.
 
 ## Published in GECCO 2023 🎉
 
