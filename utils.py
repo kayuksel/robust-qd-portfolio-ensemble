@@ -57,6 +57,8 @@ def calculate_psr(rewards):
     psr_out[psr_out.isnan()] = 0.0
     return psr_out  
 
+#AlphaSharpe: LLM-Driven Discovery of Robust Risk-Adjusted Metrics
+#https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5111141
 def alpha_sharpe(log_returns: torch.Tensor, risk_free_rate: float = 0.0, epsilon: float = 1e-5) -> torch.Tensor:
     n_periods = log_returns.shape[-1]
     log_returns = log_returns.unsqueeze(0) if log_returns.ndim == 1 else log_returns
