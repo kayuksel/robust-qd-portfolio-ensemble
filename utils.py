@@ -59,34 +59,33 @@ def calculate_psr(rewards):
 
 #AlphaSharpe: LLM-Driven Discovery of Robust Risk-Adjusted Metrics
 #https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5111141
-def alpha_sharpe(log_returns: torch.Tensor, risk_free_rate: float = 0.0, epsilon: float = 1e-5) -> torch.Tensor:
+def alpha_sharpe(
+    log_returns: torch.Tensor,
+    risk_free_rate: float = 0.00,
+    epsilon: float = 1.5e-5,
+    downside_risk_factor: float = 2.0,
+    forecast_volatility_factor: float = 1.33,
+    forecast_window: int = 3
+) -> torch.Tensor:
     n_periods = log_returns.shape[-1]
     log_returns = log_returns.unsqueeze(0) if log_returns.ndim == 1 else log_returns
-
+    
     # Calculate mean log excess return (expected log excess return)
     mean_log_excess_return = log_returns.mean(dim=-1) - risk_free_rate
 
     # Calculate standard deviation of log returns
     std_log_returns = log_returns.std(dim=-1, unbiased=False)
 
-    # Alpha S1 calculation
-    numerator = mean_log_excess_return.exp()
-    denominator_s1 = torch.sqrt((std_log_returns.pow(2) + epsilon) * (std_log_returns + epsilon))
-    alpha_s1 = numerator / denominator_s1
-
     # Downside Risk (DR) calculation
     negative_returns = log_returns[log_returns < 0]
-    downside_risk = (
+    downside_risk = downside_risk_factor * (
         negative_returns.std(dim=-1, unbiased=False) +
         (negative_returns.numel() ** 0.5) * std_log_returns
     ) / (negative_returns.numel() + epsilon)
 
     # Forecasted Volatility (V) calculation
-    forecasted_volatility = log_returns[:, -n_periods // 4:].std(dim=-1, unbiased=False).sqrt()
-
-    # Alpha S2 calculation
-    denominator_s2 = torch.sqrt(std_log_returns.pow(2) + epsilon) + downside_risk + forecasted_volatility
-    return numerator / denominator_s2
+    forecasted_volatility = forecast_volatility_factor * log_returns[:, -n_periods // forecast_window:].std(dim=-1, unbiased=False).sqrt()
+    return mean_log_excess_return.exp() / (torch.sqrt(std_log_returns.pow(2) + epsilon) + downside_risk + forecasted_volatility)
 
 def covv(X):
     D = X.shape[-1]
