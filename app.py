@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import torch, pywt
 import matplotlib.pyplot as plt
-from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
+from concurrent.futures import ThreadPoolExecutor
 from utils import *
 
 def clip_outliers(data, quantile=0.95, factor = 2):
@@ -44,7 +44,7 @@ if uploaded_file:
     data_cumsum = udata.cumsum()
     cumulative_log_returns = np.exp(data_cumsum)
 
-    with ProcessPoolExecutor() as executor:
+    with ThreadPoolExecutor() as executor:
         results = {col: executor.submit(process_column, cumulative_log_returns[col].values) for col in cumulative_log_returns.columns}
         denoised_log_returns = {col: res.result() for col, res in results.items()}
 
@@ -73,6 +73,7 @@ if uploaded_file:
             future = executor.submit(portfolio_optimizer.optimize, cutoff_index, max_epochs)
             best_weights, best_epoch, test_losses, training_entropies = future.result()
 
+        st.write("### Training Analysis")
         fig, ax1 = plt.subplots(figsize=(10, 6))
         epochs = list(range(1, len(test_losses) + 1))
         ax1.plot(epochs, test_losses, label="Validation Loss", color="blue", linestyle="-")
@@ -95,6 +96,24 @@ if uploaded_file:
 
         if (best_epoch + 1) != max_epochs:
             st.markdown(f"Consider reducing the number of training epochs to {best_epoch + 1}.")
+
+        st.write("### Cumulative Returns")
+        # Plot cumulative returns against index
+        index_cumulative_returns = udata[index_ticker][cutoff_index:].cumsum()
+        portfolio_cumulative_returns = portfolio_optimizer.get_test_returns(cutoff_index)
+
+        fig, ax = plt.subplots(figsize=(10, 6))
+        ax.plot(data.index[cutoff_index:], index_cumulative_returns, label=f"{index_ticker} (Index)", linestyle="--", color="red")
+        ax.plot(data.index[cutoff_index:], portfolio_cumulative_returns, label="Portfolio", color="blue")
+        ax.set_title("Cumulative Returns: Portfolio vs Index")
+        ax.set_xlabel("Date")
+        ax.set_ylabel("Cumulative Returns")
+        ax.legend()
+        plt.xticks(rotation=45)
+        plt.tight_layout()
+        st.pyplot(fig)
+
+        st.markdown(f"The above chart shows the method's validation performance. Wait, I'm retraining with the whole data ...")
 
         with ThreadPoolExecutor() as executor:
             future = executor.submit(portfolio_optimizer.final_portfolio, max_epochs)
