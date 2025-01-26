@@ -1,3 +1,4 @@
+import pdb
 import numpy as np
 import torch, math
 import torch.nn as nn
@@ -46,14 +47,44 @@ def torch_cdf(x):
 def calculate_psr(rewards):
     mean, std = rewards.mean(dim=0), rewards.std(dim=0)
     rdiff = rewards - mean
-    zscore = rdiff / std
+    zscore = rdiff / (std + 1e-8)
     skew = (zscore**3).mean(dim=0)
     kurto = ((zscore**4).mean(dim=0) - 4) / 4
-    sharpe = mean / std
-    psr_in = (1 - skew * sharpe + kurto * sharpe**2) / (len(rewards) - 1)
+    sharpe = mean / (std + 1e-8)
+    #sharpe[sharpe.isnan()] = 0.0
+    psr_in  = (1 - skew * sharpe + kurto * sharpe**2) / (len(rewards)-1)
     psr_out = torch_cdf(sharpe / psr_in.sqrt())
     psr_out[psr_out.isnan()] = 0.0
-    return mean, std, psr_out
+    return psr_out  
+
+def alpha_sharpe(log_returns: torch.Tensor, risk_free_rate: float = 0.0, epsilon: float = 1e-5) -> torch.Tensor:
+    n_periods = log_returns.shape[-1]
+    log_returns = log_returns.unsqueeze(0) if log_returns.ndim == 1 else log_returns
+
+    # Calculate mean log excess return (expected log excess return)
+    mean_log_excess_return = log_returns.mean(dim=-1) - risk_free_rate
+
+    # Calculate standard deviation of log returns
+    std_log_returns = log_returns.std(dim=-1, unbiased=False)
+
+    # Alpha S1 calculation
+    numerator = mean_log_excess_return.exp()
+    denominator_s1 = torch.sqrt((std_log_returns.pow(2) + epsilon) * (std_log_returns + epsilon))
+    alpha_s1 = numerator / denominator_s1
+
+    # Downside Risk (DR) calculation
+    negative_returns = log_returns[log_returns < 0]
+    downside_risk = (
+        negative_returns.std(dim=-1, unbiased=False) +
+        (negative_returns.numel() ** 0.5) * std_log_returns
+    ) / (negative_returns.numel() + epsilon)
+
+    # Forecasted Volatility (V) calculation
+    forecasted_volatility = log_returns[:, -n_periods // 4:].std(dim=-1, unbiased=False).sqrt()
+
+    # Alpha S2 calculation
+    denominator_s2 = torch.sqrt(std_log_returns.pow(2) + epsilon) + downside_risk + forecasted_volatility
+    return numerator / denominator_s2
 
 def covv(X):
     D = X.shape[-1]
@@ -89,21 +120,21 @@ class RobustQDPortfolioEnsemble:
         #weights = weights.softmax(dim=1) if train else entmax15(weights, dim=1)
         weights = entmax15(weights, dim=1) if train else sparsemax(weights, dim=1)
         rets = weights.matmul(valid_data.T - index[:len(valid_data)].to(self.device))
-        
         rets = dblock(rets.unsqueeze(1)).squeeze(1) if train else rets
+
+        if train:
+            ww = torch.arange(1, len(valid_data)+1).pow(0.5).to(self.device)
+            rets = (rets * (ww/ww.sum()))
+
         omg = rets.clamp(min=0.0).mean(dim=1) / rets.abs().mean(dim=1)
 
         if train:
             matrix = corr(rets).fill_diagonal_(0.0)
             corr_max = matrix.max(dim=1)[0]
-
-            ww = torch.arange(1, len(valid_data)+1).pow(0.5).to(self.device)
-            rets = (rets * (ww/ww.sum())).sum(dim=0)
-
             entropy = get_entropy(eigen_vectors, weights)
-            return -(calculate_psr(rets.T)[-1]*omg) * entropy / corr_max
+            return -alpha_sharpe(rets) * omg * entropy / corr_max
 
-        return -(calculate_psr(rets.T)[-1]*omg)
+        return -calculate_psr(rets.T) * omg
 
 
     def optimize(self, cutoff_index, epochs):
@@ -133,6 +164,12 @@ class RobustQDPortfolioEnsemble:
                 training_entropies.append(entropy)
 
         return self.weights.clone().detach(), best_epoch, test_losses, training_entropies
+
+    def get_test_returns(self, cutoff_index):
+        with torch.no_grad():
+            avg_weights = sparsemax(self.weights.mean(dim=0), dim=0)
+            cumulative_returns = avg_weights @ self.data[cutoff_index:].T
+            return cumulative_returns.cumsum(dim=0).detach().cpu().numpy()
 
     def final_portfolio(self, epochs):
         self.weights.data.zero_()
