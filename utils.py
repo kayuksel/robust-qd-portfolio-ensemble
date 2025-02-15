@@ -123,7 +123,8 @@ class RobustQDPortfolioEnsemble:
             matrix = corr(rets).fill_diagonal_(0.0)
             corr_max = matrix.max(dim=1)[0]
             entropy = get_entropy(eigen_vectors, weights)
-            return -alpha_sharpe(rets) * omg * entropy / corr_max
+            loss = -alpha_sharpe(rets) * omg * entropy 
+            return (loss - loss.mean()) / corr_max, matrix
 
         return -calculate_psr(rets.T) * omg
 
