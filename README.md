@@ -41,7 +41,7 @@ The primary optimization target is based on the **multiplication of the Probabil
 
 ### Modifying the Reward Function
 
-You can modify the **primary objective** (`calculate_psr(rets.T) * omg`) to incorporate new performance metrics. However, it is critical to **retain the secondary objective**, which ensures robustness and diversification.
+You can modify the **primary objective** (`alpha_sharpe(rets) * omg`) to incorporate new performance metrics. However, it is critical to **retain the secondary objective**, which ensures robustness and diversification.
 
 ## Additional Tips and Details
 
