@@ -32,7 +32,7 @@ streamlit run app.py --server.maxUploadSize 1000
 
 ## Multi-Objective Optimization
 
-The primary optimization target is based on the **multiplication of the Probabilistic Sharpe Ratio (PSR)** and the **Omega Ratio (OMG)**, which balances portfolio performance and robustness against extreme returns.
+The primary optimization target is based on the **multiplication of the AlphaSharpe metric** and the **Omega Ratio (OMG)**, which balances portfolio performance and robustness against extreme returns.
 
 ### Secondary Objectives
 
